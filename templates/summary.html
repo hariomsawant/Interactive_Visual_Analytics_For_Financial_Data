@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visual Data Analytics for Financial Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        pre {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        .slide {
+            flex: 0 0 auto;
+            width: 80%;
+            scroll-snap-align: start;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            background: #fafafa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .slider img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 16px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #fff;
+            background: #007BFF;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        ul {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        ul li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visual Data Analytics for Financial Data</h1>
+    <p><b>Model Used:</b> Random Forest Classifier</p>
+    <p><b>Accuracy:</b> {{ accuracy }}%</p>
+
+    <h2>Random Forest Rules</h2>
+    <pre>{{ rules|safe }}</pre>
+
+    <h2>Top 10 Most Common Decision Paths</h2>
+    <ul>
+      {% for path, pred_class, count, percent in common_paths %}
+        <li><b>{{ count }}</b> samples ({{ percent }}%) → {{ path }} → <i>predicts: {{ pred_class }}</i></li>
+      {% endfor %}
+    </ul>
+
+    <h2>SHAP Beeswarm Plots</h2>
+    <div class="slider">
+        {% for class_label, file in beeswarm_paths.items() %}
+            <div class="slide">
+                <h3>{{ class_label }}</h3>
+                <img src="{{ url_for('static', filename=file) }}" alt="SHAP Beeswarm {{ class_label }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>SHAP Feature Importance Plots</h2>
+    <div class="slider">
+        {% for class_label, file in bar_paths.items() %}
+            <div class="slide">
+                <h3>{{ class_label }}</h3>
+                <img src="{{ url_for('static', filename=file) }}" alt="SHAP Bar {{ class_label }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    <br><br>
+    <a href="{{ url_for('custom') }}" class="btn">Build Your Own Model</a>
+</body>
+</html>

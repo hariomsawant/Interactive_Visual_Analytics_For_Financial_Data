@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Build Your Own Model</title>
+</head>
+<body>
+  <h1>Customize Decision Rules</h1>
+
+  <button onclick="window.open('https://blockly-demo.appspot.com/static/demos/code/index.html', '_blank')">
+    Build
+  </button>
+
+  <p>Type your decision tree logic below</p>
+
+  <form method="POST">
+    <textarea name="code" rows="10" cols="80" placeholder="
+# Example decision logic:
+if trend_num <= -0.5:
+    return 'sell'
+elif price_change <= -0.6:
+    if momentum <= 4.5:
+        return 'sell'
+    else:
+        return 'buy'
+else:
+    return 'buy'
+"></textarea><br><br>
+    <button type="submit">Run</button>
+  </form>
+
+  {% if result %}
+    <h2>Result</h2>
+    <p>{{ result }}</p>
+  {% endif %}
+
+  <form action="{{ url_for('summary') }}" style="margin-top: 16px;">
+    <button type="submit">Back</button>
+  </form>
+</body>
+</html>
